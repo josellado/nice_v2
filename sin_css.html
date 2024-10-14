@@ -1,0 +1,404 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="style.css">
+        <style>
+
+            /*para las tablas */
+
+        
+            table {
+                width: 100%;
+                margin-bottom: 5rem;
+                border:none;
+                
+            }
+
+
+            td {
+
+             text-align:left;
+            vertical-align:middle;
+            }
+            table td, .table th {
+                font-size:20px; 
+            }
+
+            table, tr, td, th{
+                    margin: auto;
+
+                    border: none;
+
+                    }
+
+
+
+            table.mystyle_100 {
+                font-family: "Arial", Times, serif;
+                width: 100%;
+                text-align: center;
+                border-collapse: collapse;
+                border-bottom: 5px solid #048af8;
+                border: none;
+                        }
+            table.mystyle_100 thead th {
+                    padding: 10px 6px;
+                    }
+            table.mystyle_100 thead th.text-right, table.mystyle_100 tr td.text-right {
+                    text-align: right;
+                    }
+            table.mystyle_100 tbody tr td {
+                    padding: 8px 2px;
+                    font-size: 18px;
+                    color: #7F7F7F;
+                    border-bottom: 2px solid #ccc;
+                    }
+            table.mystyle_100 thead {
+                    background: #f3f3f3;
+                    color:#333;
+                    border-bottom: 2px solid #8c2638;
+                    text-align: left;
+                    }      
+            /*table.mystyle_100 th {    text-align: left;}*/
+        
+
+            
+            table.mystyle_50 {
+                font-family: "Times New Roman", Times, serif;
+                width: 50%;
+                height: 200px;
+                text-align: center;
+                border-collapse: collapse;
+                border: none;
+                        }
+            table.mystyle_50 td, table.mystyle_50 th {
+                    padding: 0px 6px;
+                    border-bottom: 1px solid #3c3c3b;
+                    }
+            table.mystyle_50 tbody td {
+                    font-size: 11px;
+                    color: #7F7F7F;
+                    }
+            table.mystyle_50 thead {
+                    background: rgb(182, 182, 182);
+                    border-bottom: 3px solid #af4242;
+                    }
+            table.mystyle_50 thead th {
+                    font-size: 13px;
+                    font-weight: bold;
+                    color: #000000;
+                    text-align: center;
+                    }
+
+
+        
+    
+
+            h1 {
+                font-family: Digital Sans Light;
+                font-weight:bold;
+                font-size:28px;
+                color:#af4242;
+                padding-top:4px;
+                padding-bottom:4px;
+                border-bottom: 2px solid rgb(182, 182, 182);
+            }
+            h2 {
+                font-family: Digital Sans Light;
+                font-weight:bold;
+                font-size:22px;
+                color:#7e7d7d;
+                padding-top:4px;
+                padding-bottom:4px;
+                border-bottom: 2px dotted rgb(182, 182, 182);
+                text-align: left;
+            }
+
+            h3 {
+                font-family: Digital Sans Light;
+                font-weight:bold;
+                font-size:22px;
+                color:#7e7d7d;
+                padding-top:1px;
+                padding-bottom:0px;
+            
+
+            }
+    
+            /* los estilos unicos de un objeto*/
+
+            .periodo_fecha {
+               font-size: 18px;
+                color: rgb(157, 157, 170);
+                margin-left: 50px;
+           
+            }
+
+            .identado_derecha {
+                margin-left: 50px;
+            }
+
+            p.black_margin {
+            color: black;
+            margin-left: 50px;
+            font-size: 10px;
+            }
+
+            p.gray_margin {
+                color:gray;
+                margin-left: 50px;
+                font-size: 15px;
+            }
+        
+             /* los estilos de cambio de pag*/
+            .page-break {
+                page-break-after: always;
+                }
+                
+
+            body {
+                font-family: "Noto Color Emoji", "Apple Color Emoji", "Segoe UI Emoji",
+                    Times, Symbola, Aegyptus, Code2000, Code2001, Code2002, Musica, serif,
+                    LastResort;
+                }
+
+         </style>
+    </head>
+    <body>
+        <h1>Informe Patrimonial</h1>
+
+        <p class="periodo_fecha">{{periodo_informe}}</p>
+
+        <h2 class="identado_derecha">Datos de la cuenta</h2>
+        
+        <p class="gray_margin"> TITULAR</p>
+        <p class="black_margin"> {{nombre_cliente}}</p>
+
+        <p class="gray_margin"> REFERENCIA</p>
+        <p class="black_margin"> {{referencia}}</p>
+
+        <p class="gray_margin"> CODIGO IBAN DE LA CUENTA</p>
+        <p class="black_margin"> iban</p>
+    
+        <div class="page-break"></div>
+    
+        <!--primera pagina--> 
+
+    <h1>SITUACIÓN PATRIMONIAL</h1>
+
+    <table class="fullwidth">
+        <tr>
+            <td width="40%" style="vertical-align:top;text-align: left;">
+                {{evolucion_patrimonio}}
+            </td>
+            <td width="60%" style="vertical-align:top-left;text-align: center" >
+                <h3>Distribucion de la Cartera</h2>
+                <img src="C:/Users/jllado/Desktop/pdf_gestion_activos/graficos/distr_inversiones_formato.png" alt="image">
+            </td>
+        </tr> 
+    </table>
+
+    <h1>EVOLUCION DEL PATRIMONIO</h1>
+
+    <table class="fullwidth">
+        <tr>
+            <td width="70%" style="vertical-align:top;">
+                {{situacion_patrimonial}}
+                <div style="color:#666; font-size:10px; line-height:0; padding-top:5px; float:right;">*BN: Bolsa Nacional, FI: Fondos de Inversion, SC: Saldo en cuenta </div>
+            </td>
+            <td width="30%" style="vertical-align:top; text-align:center">
+                <h3>Distribucion del Patrimonio</h3>
+                <img src="C:/Users/jllado/Desktop/pdf_gestion_activos/graficos/pct_BN_SC_FI.png" alt="image">
+
+            </td>
+        </tr>
+    </table>
+    
+
+    <table class="fullwidth">
+        <tr>
+            <td width="100%" style="vertical-align:left;">
+                <h2>Evolucion Contra Benchmark</h2>
+                <img src="C:/Users/jllado/Desktop/pdf_gestion_activos/graficos/evolucion_compa_formato.png" alt="image">
+            </td>
+
+        </tr>
+    </table>
+
+    <h1>RESULTADO ANUAL</h1>
+    <table class="fullwidth">
+        <tr>
+            <td width="50%" style="vertical-align:top;">
+                {{resultado_anual}}
+            </td>
+
+        </tr>
+    </table>
+    <!--
+    <div class="page-break"></div>-->
+    
+    <!-- 
+    <div class="page-break"></div -->
+    
+    <!--segunda pagina--> 
+
+    <h1>COMPOSICION DE LOS FONDOS</h1>
+
+    <table class="fullwidth">
+        <tr>
+            <td width="50%" style="vertical-align:top;">
+                {{composicion_cartera}}
+                <div style="color:#666; font-size:10px; line-height:0; padding-top:5px; float:right;">Plusvalía*: Desde el inicio. Rentabilidad*: En el período</div>
+            </td>
+
+        </tr>
+    </table>
+
+  
+
+    <table class="fullwidth",style="margin-top: 20px">
+        <tr>
+            <td width="50%" style="vertical-align:top;">
+                <h3 style="margin-top: 20px; text-align: center;">Distribucion de la Cartera por Tipo de Activo</h3>
+                <div  style ="text-align: center;"><img src="C:/Users/jllado/Desktop/pdf_gestion_activos/graficos/comp_cartera_sectores.png" alt="image"></div>
+            </td>
+
+            <td width="50%" style="vertical-align:top;">
+                <h3 style="margin-top: 20px; text-align: center;">Distribucion de las divisas</h3>
+                <div  style ="text-align: center;"><img src="C:/Users/jllado/Desktop/pdf_gestion_activos/graficos/pct_divisa.png" alt="image"></div>
+                <div style="color:#666; font-size:10px; line-height:0; padding-top:0px; float:right;margin-top: 2;">*La exposicion subyacente puedo no corresponderse con esta distribucion </div>
+            </td>
+
+
+ 
+
+        </tr>
+    </table>
+
+    <!--grafico rentabilidad de cada fondo e histograma-->
+      <!--<h2>RENTABILIDAD DE LOS FONDOS</h2>-->
+
+
+    <div class="page-break"></div>
+    
+    <!--tercera pagina--> 
+    
+    <h1>DISTRIBUCION DE LA CARTERA DE FONDOS</h1>
+
+    <table class="fullwidth">
+        <tr>
+            <h2>Distribucion Geografica de Inversiones</h2>
+            <td width="25%" style="vertical-align:top;">
+                {{distribucion_inv_tabla}}
+            </td>
+            <td width="75%" style="vertical-align:left;text-align: top">
+                <img src="C:/Users/jllado/Desktop/pdf_gestion_activos/graficos/map_inversiones.png" alt="image">
+            </td>
+
+        </tr>
+    </table>
+
+    <table class="fullwidth" style="margin-top: 20px;">
+        <tr>
+            <h2>Distribucion Sectorial de las inversiones de RV Y Mixtos</h2>
+            <td width="25%" style="vertical-align:top;">
+                {{categoria_inversiones}}
+            </td>
+            <td width="75%" style="vertical-align:left;text-align: center">
+                <img src="C:/Users/jllado/Desktop/pdf_gestion_activos/graficos/distr_sectores.png" alt="image">
+                <div style="color:#666; font-size:10px; line-height:0; padding-top:5px; float:right;">*En relacion a los fondos de Inversión </div>
+            </td>
+
+        </tr>
+    </table>
+
+    <table class="fullwidth">
+        <tr>
+            <td width="100%" style="vertical-align:left;">
+                <h2>Histograma de Activos</h2>
+                <div  style ="text-align: left;"><img src="C:/Users/jllado/Desktop/pdf_gestion_activos/graficos/hist_activos.png" alt="image">
+                    <div  style ="text-align: center;"><img src="C:/Users/jllado/Desktop/pdf_gestion_activos/graficos/legend.png" alt="image">
+                
+            </td>
+
+        </tr>
+    </table>
+
+    <div class="page-break"></div>
+    
+    <!--Cuarta  pagina--> 
+    
+    <h1>PERFORMANCE ATTRIBUTION</h1>
+
+    <!--<div class="">
+        {{performance_actual}}
+    </div>
+    <div class="">
+        {{performance_antiguo}}
+    </div>-->
+    <table class="fullwidth">
+        <tr>
+            <td width="100%" style="vertical-align:top;">
+                {{performance_actual}}
+            </td>
+           <!-- <td width="50%" style="vertical-align:top;">
+                {{performance_antiguo}}
+            </td>-->
+        </tr>
+    </table>
+
+
+    <h1>INDICADOR DE SOSTENIBILIDAD</h1>
+
+
+    <h1>HISTORICO DE RENTABILIDAD</h1>
+
+    <table class="fullwidth">
+        <tr>
+            <td width="100%">
+                {{rent_anualizadas_histo}}
+            </td>
+
+        </tr>
+    </table>
+
+    <div class="page-break"></div>
+    
+    <!--Quinta  pagina--> 
+    <h1>EVOLUCION INDICES REFERENCIA</h1>
+
+    <table class="fullwidth">
+        <tr>
+            <td width="100%">
+                {{indices_result}}
+            </td>
+
+        </tr>
+    </table>
+
+    <h1>MOVIMIENTOS DEL PERIODO</h1>
+
+    <table class="fullwidth">
+
+            <td width="100%">
+                {{movimientos_periodo}}
+            </td>
+
+        </tr>
+    </table>
+
+    <div class="page-break"></div>
+
+
+    <div</div>
+
+    
+
+    </body>
+
+
+
