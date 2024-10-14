@@ -461,7 +461,7 @@ else:
 
     if st.button("Logout"):
         st.session_state.authenticated = False
-        st.experimental_rerun()
+        st.rerun()
 
 
 
