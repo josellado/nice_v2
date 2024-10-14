@@ -442,17 +442,17 @@ img_base64 = get_image_base64(image_path)
 
 # Authentication form
 if not st.session_state.authenticated:
-    main()
-    #st.title("Login  NICE")
-    #username = st.text_input("Username")
-    #password = st.text_input("Password", type="password")
-    #
-    #if st.button("Login"):
-    #    if username == correct_username and check_password(password, correct_password_hash):
-    #        st.session_state.authenticated = True
-    #        st.rerun()
-    #    else:
-    #        st.error("Incorrect username or password")
+    #main()
+    st.title("Login  NICE")
+    username = st.text_input("Username")
+    password = st.text_input("Password", type="password")
+    
+    if st.button("Login"):
+        if username == correct_username and check_password(password, correct_password_hash):
+            st.session_state.authenticated = True
+            st.rerun()
+        else:
+            st.error("Incorrect username or password")
 
 
 else:
