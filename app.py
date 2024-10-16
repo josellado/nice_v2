@@ -121,7 +121,20 @@ def get_year(df):
     return df['year'].unique()
 
 
+@st.cache_data
+def filter_dataframe(df, tipo, subtipos, detalles):
+    filtered_df = df
 
+    if tipo != "All":
+        filtered_df = filtered_df[filtered_df['Tipo'] == tipo]
+
+    if subtipos:
+        filtered_df = filtered_df[filtered_df['Subtipo'].isin(subtipos)]
+
+    if detalles != "All":
+        filtered_df = filtered_df[filtered_df['Detalle'].apply(lambda x: any(item in x for item in detalles))]
+
+    return filtered_df
 
 
 @st.cache_data
@@ -283,20 +296,21 @@ def main():
 
 
             # Filter the dataframe based on selections
-            filtered_df = df
+            filtered_df = filter_dataframe(df, selected_tipo, selected_subtipos, selected_detalle)
 
 
-            if selected_tipo != "All":
-                filtered_df = filtered_df[filtered_df['Tipo'] == selected_tipo]
 
-            if selected_subtipos:
-                filtered_df = filtered_df[filtered_df['Subtipo'].isin(selected_subtipos)]
-
+            #if selected_tipo != "All":
+            #    filtered_df = filtered_df[filtered_df['Tipo'] == selected_tipo]
+#
+            #if selected_subtipos:
+            #    filtered_df = filtered_df[filtered_df['Subtipo'].isin(selected_subtipos)]
+#
+            ##if selected_detalle != "All":
+            ##    filtered_df = filtered_df[filtered_df['Detalle'].apply(lambda x: any(item in x for item in selected_detalle))]
+#
             #if selected_detalle != "All":
             #    filtered_df = filtered_df[filtered_df['Detalle'].apply(lambda x: any(item in x for item in selected_detalle))]
-
-            if selected_detalle != "All":
-                filtered_df = filtered_df[filtered_df['Detalle'].apply(lambda x: any(item in x for item in selected_detalle))]
             # --------------------------------------------------------------
 
             # PADNAS DF 
@@ -461,7 +475,7 @@ else:
 
     if st.button("Logout"):
         st.session_state.authenticated = False
-        st.rerun()
+        st.experimental_rerun()
 
 
 
