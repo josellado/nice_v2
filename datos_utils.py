@@ -156,17 +156,29 @@ def load_all_df():
     else:
         selected_weeks = []
 
+    print(selected_months,selected_weeks,selected_years,"datos a filtrar")
 
-    df = df_load_dos[
-            (df_load_dos['year'].isin(selected_years)) & 
-            (df_load_dos['month'].isin(selected_months)) & 
-            (df_load_dos['week'].isin(selected_weeks))
-        ]
-    
 
-    df = calculate_hierarchical_percentages(df_load_dos)
+    filtered_df = df_load_dos.copy()
 
-    return df
+    # Apply year filter only if selected_years is not empty
+    if selected_years:
+        filtered_df = filtered_df[filtered_df['year'].isin(selected_years)]
+
+    # Apply month filter only if selected_months is not empty
+    if selected_months:
+        filtered_df = filtered_df[filtered_df['month'].isin(selected_months)]
+
+    # Apply week filter only if selected_weeks is not empty
+    if selected_weeks:
+        filtered_df = filtered_df[filtered_df['week'].isin(selected_weeks)]
+
+
+    filtered_df = calculate_hierarchical_percentages(filtered_df)
+
+    print(filtered_df.head(60),"esto es fitlerd df")
+
+    return filtered_df
 
 
 
@@ -199,13 +211,16 @@ def create_interactive_df(df):
 
 def update_df(expanded_index):
 
+    print("exoande index ", expanded_index)
+
 
     df_filtrado_datos = load_all_df()
-    print(df_filtrado_datos)
+    #print(df_filtrado_datos.head(60),"esto si que si")
 
 
     df_updated = st.session_state.df_interactive.copy()
-    if expanded_index:
+    if expanded_index is not None and expanded_index != []:
+     
         expanded_row = df_updated.iloc[expanded_index]
         
         df_updated.loc[expanded_index, 'expanded'] = not expanded_row['expanded']
@@ -293,7 +308,9 @@ def update_df(expanded_index):
         
         st.session_state.df_interactive = df_updated.reset_index(drop=True)
 
+
     else:
+        print("esta aqui?¿?¿")
         st.session_state.df_interactive = df_updated.reset_index(drop=True)
 
 
