@@ -9,8 +9,14 @@ import re
 import ast
 import codecs
 import streamlit.components.v1 as components
+import numpy as np
 
-
+def to_empty_list(val):
+    if isinstance(val, (list, np.ndarray)):
+        return [] if len(val) == 0 else val
+    if pd.isna(val) or val is None:
+        return []
+    return val
 
 def parse_categories(s):
     if isinstance(s, str):
@@ -63,9 +69,6 @@ def get_text_file_content_from_s3(bucket_name, object_key):
 
 @st.cache_data(ttl=200)
 def load_data():
-    # Sample DataFrame
-    #df_nice = pd.read_csv("new_clase/maestro.csv")
- 
 
     df_nice = pd.read_csv("data.csv")
 
@@ -75,21 +78,9 @@ def load_data():
     df_nice['direction'] = df_nice['direction'].replace('Incoming', 'Saliente')
 
 
-    # columna cliente si si o no
-    #df_nice['cliente'] = df_nice['cliente'].apply(replace_values)
-
-    #df_nice = df_nice[["s3_path","direction","new_class","new_subclass","tematica"]]
-
     df_nice = df_nice[["s3_path","direction","year","month","tematica","tipo","subtipo","detalle","subelemento","content"]]
 
-    #df_nice['new_subclass']=df_nice['new_subclass'].apply(ast.literal_eval)
-#
-    #    # palbra asistencia esta mal 
-    #df_nice["new_subclass"] = df_nice["new_subclass"].replace(["Asistecia"],["Asistencia"])
 
-
-    # ordenadmos los valores 
-    #df_nice['new_subclass']=df_nice['new_subclass'].apply(sorted)
 
     df_nice["Seleccion"] = False
 
@@ -137,7 +128,12 @@ def load_data():
         df_nice['Subelemento'] = df_nice['Subelemento'].apply(ast.literal_eval).apply(sorted)
     
 
-    
+    # cambiar quejas por otros temas
+    df_nice.loc[(df_nice['Tipo'] == 'otros temas') & (df_nice['Subtipo'] == 'quejas'), 'Subtipo'] = 'otros'
+
+    # cambiar todas las listas sin Nan values
+    df_nice['Detalle'] = df_nice['Detalle'].apply(to_empty_list)
+    df_nice['Subelemento'] = df_nice['Subelemento'].apply(to_empty_list)
     
     
     return  df_nice

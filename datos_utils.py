@@ -210,6 +210,13 @@ def create_interactive_df(df):
         'Tipo_Percentage': 'first',
         'Tipo_Count': 'first'
     }).reset_index()
+
+    # ordenadmospara dejar otros temas abajo
+    custom_order = ['gestion de cuenta y soporte clientes', 'productos bancarios e info comercial', 'otros temas']
+    df_tipo['Tipo'] = pd.Categorical(df_tipo['Tipo'], categories=custom_order, ordered=True)
+    df_tipo = df_tipo.sort_values('Tipo')
+    df_tipo = df_tipo.reset_index(drop=True)
+
     
     df_tipo['Percentage'] = df_tipo['Tipo_Percentage'].apply(lambda x: f"{x:.2f}%")
     df_tipo['Count'] = df_tipo['Tipo_Count'].astype(int)
