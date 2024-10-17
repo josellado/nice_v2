@@ -17,6 +17,7 @@ def calculate_hierarchical_percentages(df):
     results = []
     
     for tipo in tipo_counts.index:
+
         tipo_df = df[df['Tipo'] == tipo]
         tipo_count = len(tipo_df)
         
@@ -35,13 +36,21 @@ def calculate_hierarchical_percentages(df):
             
             if total_detalle_count > 0:
                 for detalle, detalle_count in detalle_counts.items():
+
                     detalle_percentage = round((detalle_count / total_detalle_count * 100), 2)
                     
                     # Calculate percentages for Subelemento within each Detalle
                     Subelemento_df = subtipo_df[subtipo_df['Detalle'].apply(lambda x: detalle in x)]
                     Subelemento_items = [item for sublist in Subelemento_df['Subelemento'].tolist() for item in sublist]
                     Subelemento_counts = Counter(Subelemento_items)
+                    
+                    # si esta en nan lo contamos:
+                    empty_list_count = sum(1 for sublist in Subelemento_df['Subelemento'].tolist() if not sublist)
+                    Subelemento_counts[''] = empty_list_count
+
+                    # total de las listas
                     total_Subelemento_count = sum(Subelemento_counts.values())
+
                     
                     if total_Subelemento_count > 0:
                         for Subelemento, Subelemento_count in Subelemento_counts.items():
@@ -183,6 +192,13 @@ def load_all_df():
 
 
 
+def get_first_non_empty_from_bottom(df, column, start_index):
+    for i in range(start_index, -1, -1):
+        value = df.iloc[i][column]
+        if pd.notna(value) and value != '':
+            return value
+    return None 
+
 
 
 
@@ -250,7 +266,13 @@ def update_df(expanded_index):
             
             elif expanded_row['level'] == 'Subtipo':
                 tipo = df_updated.iloc[expanded_index - 1]['Tipo']
+
+                # cehck that tipo is not empty
+                if pd.isna(tipo) or tipo == '':
+                    tipo= get_first_non_empty_from_bottom(df_updated, 'Tipo', expanded_index - 1)
+
                 subtipo = expanded_row['Subtipo']
+
                 df_detalle = df_filtrado_datos[(df_filtrado_datos['Tipo'] == tipo) & (df_filtrado_datos['Subtipo'] == subtipo)].groupby('Detalle').agg({
                     'Detalle_Percentage': 'first',
                     'Detalle_Count': 'first'
@@ -271,9 +293,33 @@ def update_df(expanded_index):
                                         df_updated.iloc[expanded_index + 1:]]).reset_index(drop=True)
             
             elif expanded_row['level'] == 'Detalle':  # New condition for Detalle level
+
+                
+                
+                # asegurarse que tippo no es nan
                 tipo = df_updated.iloc[expanded_index - 2]['Tipo']
+                if pd.isna(tipo) or tipo == '':
+                    tipo= get_first_non_empty_from_bottom(df_updated, 'Tipo', expanded_index - 2)
+
+                # asegurarse que subtippo no es nan
                 subtipo = df_updated.iloc[expanded_index - 1]['Subtipo']
+                
+                if pd.isna(subtipo) or subtipo == '':
+                    subtipo= get_first_non_empty_from_bottom(df_updated, 'Subtipo', expanded_index - 1)
+
                 detalle = expanded_row['Detalle']
+
+                print(subtipo, "subtipo")
+
+                print(df_filtrado_datos[(df_filtrado_datos['Tipo'] == tipo) & 
+                                            (df_filtrado_datos['Subtipo'] == subtipo) & 
+                                            (df_filtrado_datos['Detalle'] == detalle)])
+                print("-----------------")
+
+
+
+        
+
                 df_Subelemento = df_filtrado_datos[(df_filtrado_datos['Tipo'] == tipo) & 
                                             (df_filtrado_datos['Subtipo'] == subtipo) & 
                                             (df_filtrado_datos['Detalle'] == detalle)].groupby('Subelemento').agg({
