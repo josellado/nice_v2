@@ -114,6 +114,7 @@ def load_data():
     df_nice['Subtipo'] = df_nice['Subtipo'].replace('incidencias', 'soporte web/app')
 
     
+    
             # convertir las llamada a listas 
     try: 
         df_nice['Detalle']=df_nice['Detalle'].apply(parse_categories)
@@ -134,6 +135,14 @@ def load_data():
     # cambiar todas las listas sin Nan values
     df_nice['Detalle'] = df_nice['Detalle'].apply(to_empty_list)
     df_nice['Subelemento'] = df_nice['Subelemento'].apply(to_empty_list)
+
+
+    # 
+    # Assuming your dataframe is called 'df' and the column is 'your_column'
+    df_nice['Detalle'] = df_nice['Detalle'].apply(lambda x: ['acceso web-app' if 'acceso a la web-app' in item else item for item in x])  
+    df_nice['Detalle'] = df_nice['Detalle'].apply(lambda x: ['incidencias web' if 'errores con la web' in item else item for item in x])    
+    df_nice['Detalle'] = df_nice['Detalle'].apply(lambda x: ['incidencias app' if 'errores con la app' in item else item for item in x])
+        
     
     
     return  df_nice
